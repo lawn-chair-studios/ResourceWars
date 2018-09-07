@@ -47,13 +47,37 @@ public class Game {
 		return viewport;
 	}
 
-	private final OrthogonalTiledMapRenderer renderer;
-	private final TiledMap map;
+	public class Level {
 
-	{
-		map = new TmxMapLoader().load("amxnz/lawnchairstudios/games/resourcewars/assets/levels/levels/Start/map.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+		private static final String DEFAULT_LEVEL_DIR = "amxnz/lawnchairstudios/games/resourcewars/assets/levels/levels/",
+				DEFAULT_LEVELID_EXT = "/map.tmx";
+
+		private final OrthogonalTiledMapRenderer renderer;
+		private final TiledMap map;
+
+		{
+			map = new TmxMapLoader().load(DEFAULT_LEVEL_DIR + "Start" + DEFAULT_LEVELID_EXT);
+			renderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+		}
+
+		private final String id;
+
+		protected Level(String id) {
+			this.id = id;
+		}
+
+		public void render() {
+			renderer.setView(camera);
+			renderer.render();
+		}
+
+		public void dispose() {
+			renderer.dispose();
+		}
+
 	}
+
+	private final Level currentLevel = new Level("Start");// TODO Remove test code
 
 	public Game(boolean stretch) {
 		viewport = stretch ? new FitViewport(20, 20, camera) : new ScreenViewport(camera);
@@ -63,11 +87,10 @@ public class Game {
 
 	public void render() {
 		camera.update();
-		renderer.setView(camera);
-		renderer.render();
+		currentLevel.render();
 	}
 
 	public void dispose() {
-		renderer.dispose();
+		currentLevel.dispose();
 	}
 }
