@@ -33,21 +33,14 @@ public class Game {
 
 	/**
 	 * <p>
-	 * <ol>
-	 * <li>Checks if the underyling {@link Viewport}, ({@link #viewport}), is a
-	 * {@link FitViewport}.</li>
-	 * <li>If it is, this method then sets that FitViewport's world size, (using
-	 * {@link FitViewport#setWorldSize(float, float)}), to the specified
-	 * values.</li>
-	 * </ol>
+	 * Sets this Game's Viewport's world size.
 	 * </p>
 	 * 
 	 * @param width  The new viewport's world width (in game units).
 	 * @param height The new viewport's world height (also in game units).
 	 */
 	public void setViewportWorldSize(float width, float height) {
-		if (viewport instanceof FitViewport)
-			viewport.setWorldSize(width, height);
+		viewport.setWorldSize(width, height);
 	}
 
 	public Viewport getViewport() {
@@ -64,6 +57,7 @@ public class Game {
 
 	public Game(boolean stretch) {
 		viewport = stretch ? new FitViewport(20, 20, camera) : new ScreenViewport(camera);
+		setViewportWorldSize(20, 20);
 		viewport.apply(true);
 	}
 
