@@ -12,6 +12,9 @@ import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue
 public abstract class Entity {
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
 			direction = new ObservableValue<Float>(0f);
+	// direction is in degrees
+
+	private final MovementManager mover = new MovementManager(x, y, direction);
 
 	private final LinkedList<DirectionHandler<Sprite>> directionHandlers = new LinkedList<DirectionHandler<Sprite>>();
 	private final ObservableValue<DirectionHandler<Sprite>> currentHandler = new ObservableValue<DirectionHandler<Sprite>>(
@@ -88,8 +91,17 @@ public abstract class Entity {
 		direction.setValue(value);
 	}
 
+	public MovementManager getMover() {
+		return mover;
+	}
+
 	public void render(Batch batch) {
-		currentHandler.getValue().getAnimation().getKeyFrame(elapsedAnimationTime += Gdx.graphics.getDeltaTime(), true)
-				.draw(batch);
+
+		mover.calculate(Gdx.graphics.getDeltaTime());
+
+		Sprite sprite = currentHandler.getValue().getAnimation()
+				.getKeyFrame(elapsedAnimationTime += Gdx.graphics.getDeltaTime(), true);
+		sprite.setPosition(getX(), getY());
+		sprite.draw(batch);
 	}
 }
