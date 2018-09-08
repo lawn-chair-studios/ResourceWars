@@ -1,5 +1,10 @@
 package amxnz.lawnchairstudios.games.resourcewars.api;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -47,6 +52,30 @@ public class Game {
 		return viewport;
 	}
 
+	// TODO Sort?
+	private final List<WeakReference<Level>> levels = new ArrayList<WeakReference<Level>>();
+
+	protected Level loadLevel(String id) {
+		return new Level(id);
+	}
+
+	protected Level getLevel(String id) {
+		for (Iterator<WeakReference<Level>> iterator = levels.iterator(); iterator.hasNext();) {
+			WeakReference<Level> wr = iterator.next();
+			if (wr.get() == null)
+				iterator.remove();
+			else if (idsEqual(wr.get().getId(), id))
+				return wr.get();
+		}
+		Level level = loadLevel(id);
+		levels.add(new WeakReference<Game.Level>(level));
+		return level;
+	}
+
+	private static boolean idsEqual(String id1, String id2) {
+		return id1.equalsIgnoreCase(id2);
+	}
+
 	public class Level {
 
 		private static final String DEFAULT_LEVEL_DIR = "amxnz/lawnchairstudios/games/resourcewars/assets/levels/levels/",
@@ -55,21 +84,30 @@ public class Game {
 		private final OrthogonalTiledMapRenderer renderer;
 		private final TiledMap map;
 
-		{
-			map = new TmxMapLoader().load(DEFAULT_LEVEL_DIR + "Start" + DEFAULT_LEVELID_EXT);
-			renderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-		}
-
 		private final String id;
 
 		protected Level(String id) {
-			this.id = id;
+			map = new TmxMapLoader().load(DEFAULT_LEVEL_DIR + (this.id = id) + DEFAULT_LEVELID_EXT);
+			renderer = new OrthogonalTiledMapRenderer(map,
+					1 / (float) map.getProperties().get("tilewidth", Integer.class));
+		}
+
+		public String getId() {
+			return id;
 		}
 
 		public void render() {
 			renderer.setView(camera);
 			renderer.render();
 		}
+
+		public void saveObjects() {
+			// TODO Code
+		}
+
+		protected void finalize() throws Throwable {
+			dispose();
+		};
 
 		public void dispose() {
 			renderer.dispose();
