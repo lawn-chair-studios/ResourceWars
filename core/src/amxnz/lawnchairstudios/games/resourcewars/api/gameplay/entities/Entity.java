@@ -11,10 +11,10 @@ import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue
 
 public abstract class Entity {
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
-			direction = new ObservableValue<Float>(0f);
+			direction = new ObservableValue<Float>(0f), speed = new ObservableValue<Float>(1f);
 	// direction is in degrees
 
-	private final MovementManager mover = new MovementManager(x, y, direction);
+	private final MovementManager mover = new MovementManager(x, y, direction, speed);
 
 	private final LinkedList<DirectionHandler<Sprite>> directionHandlers = new LinkedList<DirectionHandler<Sprite>>();
 	private final ObservableValue<DirectionHandler<Sprite>> currentHandler = new ObservableValue<DirectionHandler<Sprite>>(

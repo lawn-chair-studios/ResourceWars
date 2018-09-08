@@ -3,12 +3,14 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
 public class MovementManager {
-	private final ObservableValue<Float> x, y, direction;
+	private final ObservableValue<Float> x, y, direction, speed;
 
-	public MovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> direction) {
+	public MovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> direction,
+			ObservableValue<Float> speed) {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
+		this.speed = speed;
 	}
 
 	private class Push {
