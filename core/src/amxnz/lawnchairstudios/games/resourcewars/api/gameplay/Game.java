@@ -152,6 +152,8 @@ public class Game {
 		viewport.apply(true);
 	}
 
+	private Player mainCharacter;
+
 	public void render() {
 		camera.update();
 		currentLevel.render();
