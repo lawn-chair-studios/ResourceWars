@@ -2,15 +2,9 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 
-import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.Entity.DirectionHandler;
-
 public class DirectionHandler<AGT> implements Comparable<DirectionHandler<?>> {
 	private final float direction;
 	private final Animation<AGT> animation;
-
-	public void render(float direction) {
-		// TODO Render - (direction can be ignored)
-	}
 
 	public Animation<AGT> getAnimation() {
 		return animation;
