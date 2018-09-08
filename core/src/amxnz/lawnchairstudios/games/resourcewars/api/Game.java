@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Game {
@@ -120,11 +121,29 @@ public class Game {
 
 	}
 
+	public enum ViewportType {
+		STRETCH, FIT, GROW;
+	}
+
 	private final Level currentLevel = new Level("Start");// TODO Remove test code
 
-	public Game(boolean stretch) {
-		viewport = stretch ? new FitViewport(20, 20, camera) : new ScreenViewport(camera);
-		setViewportWorldSize(20, 20);
+	public Game(ViewportType stretch) {
+		switch (stretch) {
+		default:
+		case FIT:
+			viewport = new FitViewport(5, 5, camera);
+			break;
+		case STRETCH:
+			viewport = new StretchViewport(5, 5, camera);
+			break;
+		case GROW:
+			// TODO Generate custom scaling algorithm to appear like fit but grow to fill
+			// the screen. (This option should appear so that everything is a perfect
+			// square, (as if FIT was passed), but there should be no letterboxing; Instead
+			// of black bars being shown to chop off the map, the map is shown).
+			viewport = new ScreenViewport(camera);
+		}
+		setViewportWorldSize(5, 5);
 		viewport.apply(true);
 	}
 
