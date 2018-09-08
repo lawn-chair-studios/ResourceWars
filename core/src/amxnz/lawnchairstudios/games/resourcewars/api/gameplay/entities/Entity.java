@@ -3,7 +3,6 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -14,35 +13,8 @@ public abstract class Entity {
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
 			direction = new ObservableValue<Float>(0f);
 
-	protected class DirectionHandler<AGT> implements Comparable<DirectionHandler<?>> {
-		private final float direction;
-		private final Animation<AGT> animation;
-
-		public void render(float direction) {
-			// TODO Render - (direction can be ignored)
-		}
-
-		private Animation<AGT> getAnimation() {
-			return animation;
-		}
-
-		public DirectionHandler(float direction, Animation<AGT> animation) {
-			this.direction = direction;
-			this.animation = animation;
-		}
-
-		public float getDirection() {
-			return direction;
-		}
-
-		@Override
-		public int compareTo(DirectionHandler<?> o) {
-			return ((Float) direction).compareTo(o.direction);
-		}
-	}
-
 	private final LinkedList<DirectionHandler<Sprite>> directionHandlers = new LinkedList<DirectionHandler<Sprite>>();
-	private final ObservableValue<DirectionHandler<Sprite>> currentHandler = new ObservableValue<Entity.DirectionHandler<Sprite>>(
+	private final ObservableValue<DirectionHandler<Sprite>> currentHandler = new ObservableValue<DirectionHandler<Sprite>>(
 			null);
 	private float elapsedAnimationTime;
 
