@@ -137,11 +137,16 @@ public class Game {
 			viewport = new StretchViewport(5, 5, camera);
 			break;
 		case GROW:
-			// TODO Generate custom scaling algorithm to appear like fit but grow to fill
-			// the screen. (This option should appear so that everything is a perfect
-			// square, (as if FIT was passed), but there should be no letterboxing; Instead
-			// of black bars being shown to chop off the map, the map is shown).
 			viewport = new ScreenViewport(camera);
+
+			// 1/32 = 1 unit every 32 pixels.
+			// We want five units every (minimum screen size).
+
+			int width = Gdx.graphics.getWidth();
+			int height = Gdx.graphics.getHeight();
+			int min = width < height ? width : height;
+
+			((ScreenViewport) viewport).setUnitsPerPixel(5f / min);
 		}
 		setViewportWorldSize(5, 5);
 		viewport.apply(true);
