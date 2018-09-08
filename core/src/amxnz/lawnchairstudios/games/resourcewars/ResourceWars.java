@@ -12,7 +12,7 @@ public class ResourceWars extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		game = new Game(false);
+		game = new Game(Game.ViewportType.STRETCH);
 	}
 
 	@Override
@@ -26,4 +26,10 @@ public class ResourceWars extends ApplicationAdapter {
 	public void dispose() {
 		game.dispose();
 	}
+
+	@Override
+	public void resize(int width, int height) {
+		game.resize(width, height);
+	}
+
 }
