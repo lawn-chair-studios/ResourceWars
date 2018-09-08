@@ -1,4 +1,4 @@
-package amxnz.lawnchairstudios.games.resourcewars.api;
+package amxnz.lawnchairstudios.games.resourcewars.api.gameplay;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
