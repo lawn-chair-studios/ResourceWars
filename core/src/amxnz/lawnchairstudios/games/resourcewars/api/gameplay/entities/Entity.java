@@ -10,6 +10,7 @@ import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue.Observer;
 
 public abstract class Entity {
+
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
 			direction = new ObservableValue<Float>(0f), speed = new ObservableValue<Float>(1f);
 	// direction is in degrees
@@ -96,8 +97,6 @@ public abstract class Entity {
 	}
 
 	public void render(Batch batch) {
-
-		mover.calculate(Gdx.graphics.getDeltaTime());
 
 		Sprite sprite = currentHandler.getValue().getAnimation()
 				.getKeyFrame(elapsedAnimationTime += Gdx.graphics.getDeltaTime(), true);
