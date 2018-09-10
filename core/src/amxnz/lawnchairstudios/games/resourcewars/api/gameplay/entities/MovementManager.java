@@ -3,6 +3,12 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
 public class MovementManager {
+
+	// Note that with this API, holding W and D (to move upwards and to the right),
+	// will make the character run faster (at 1.414 m/s) than if they were to go
+	// upwards and to the right with a controller (in which case they'd travel at 1
+	// m/s).
+
 	private final ObservableValue<Float> x, y, direction, speed;
 
 	public MovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> direction,
