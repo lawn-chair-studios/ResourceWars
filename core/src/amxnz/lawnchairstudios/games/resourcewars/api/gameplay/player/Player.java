@@ -5,10 +5,12 @@ import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractE
 public class Player {
 
 	public Player(AbstractEntity inGameCharacter) {
-		this.inGameCharacter = inGameCharacter;
+		setInGameCharacter(inGameCharacter);
 	}
 
 	public void setInGameCharacter(AbstractEntity inGameCharacter) {
+		if (inGameCharacter == null)
+			throw new RuntimeException("A Player's entity cannot be null.");
 		this.inGameCharacter = inGameCharacter;
 	}
 
