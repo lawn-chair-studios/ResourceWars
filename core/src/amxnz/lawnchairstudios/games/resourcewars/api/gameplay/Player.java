@@ -1,13 +1,13 @@
 package amxnz.lawnchairstudios.games.resourcewars.api.gameplay;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
-import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.Entity;
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
+
 
 public class Player implements InputProcessor {
-	private Entity inGameCharacter;
+	private AbstractEntity inGameCharacter;
 
 	@Override
 	public boolean keyDown(int keycode) {
