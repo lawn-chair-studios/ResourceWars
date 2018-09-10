@@ -12,7 +12,14 @@ import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue
 public abstract class Entity {
 
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
-			direction = new ObservableValue<Float>(0f), speed = new ObservableValue<Float>(1f);
+			direction = new ObservableValue<Float>(0f) {
+				@Override
+				public void setValue(Float value) {
+					if ((value = value % 360) < 0)
+						value += 360;
+					super.setValue(value);
+				}
+			}, speed = new ObservableValue<Float>(1f);
 	// direction is in degrees
 
 	private final MovementManager mover = new MovementManager(x, y, direction, speed);
