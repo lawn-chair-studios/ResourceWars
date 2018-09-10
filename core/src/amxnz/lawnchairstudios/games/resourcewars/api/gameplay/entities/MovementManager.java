@@ -49,6 +49,10 @@ public class MovementManager {
 	public void calculate() {
 		x.setValue(x.getValue() + cx * speed.getValue());
 		y.setValue(y.getValue() + cy * speed.getValue());
+		float dir = (float) Math.toDegrees(Math.atan(cy / cx));
+		if (cx < 0)
+			dir += 180;
+		direction.setValue(dir);
 	}
 
 }
