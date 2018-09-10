@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
+
 public class Game {
 
 	public void resize(int width, int height) {

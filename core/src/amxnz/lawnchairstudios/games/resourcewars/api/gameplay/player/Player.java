@@ -1,4 +1,4 @@
-package amxnz.lawnchairstudios.games.resourcewars.api.gameplay;
+package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
