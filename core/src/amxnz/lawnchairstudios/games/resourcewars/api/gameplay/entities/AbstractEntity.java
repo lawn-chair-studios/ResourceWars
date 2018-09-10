@@ -1,5 +1,6 @@
 package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
@@ -9,10 +10,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue.Observer;
 
-public abstract class Entity {
+public abstract class AbstractEntity {
 
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
-			direction = new ObservableValue<Float>(0f), speed = new ObservableValue<Float>(1f);
+			direction = new ObservableValue<Float>(0f) {
+				@Override
+				public void setValue(Float value) {
+					if ((value = value % 360) < 0)
+						value += 360;
+					super.setValue(value);
+				}
+			}, speed = new ObservableValue<Float>(1f);
 	// direction is in degrees
 
 	private final MovementManager mover = new MovementManager(x, y, direction, speed);
@@ -21,6 +29,14 @@ public abstract class Entity {
 	private final ObservableValue<DirectionHandler<Sprite>> currentHandler = new ObservableValue<DirectionHandler<Sprite>>(
 			null);
 	private float elapsedAnimationTime;
+
+	public void addDirectionHandler(DirectionHandler<Sprite> handler) {
+		int pos = Collections.binarySearch(directionHandlers, handler);
+		if (!(pos < 0))
+			throw new RuntimeException("DirectionHandler with same degree already exists.");
+		else
+			directionHandlers.add(-(pos + 1), handler);
+	}
 
 	{
 		direction.addObserver(new Observer<Float>() {
