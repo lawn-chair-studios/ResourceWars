@@ -14,6 +14,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue.Observer;
 
+/**
+ * Represents an entity in game.
+ * 
+ * @author Zeale
+ *
+ */
 public abstract class AbstractEntity {
 
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),

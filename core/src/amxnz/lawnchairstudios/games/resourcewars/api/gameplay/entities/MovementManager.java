@@ -2,6 +2,12 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
+/**
+ * A class that handles movement (usually for an entity).
+ * 
+ * @author Zeale
+ *
+ */
 public class MovementManager {
 
 	// Note that with this API, holding W and D (to move upwards and to the right),
