@@ -27,6 +27,9 @@ public class MovementManager {
 
 	private float cx, cy;
 
+	public static int NORTH = 90, SOUTH = 270, EAST = 0, WEST = 180, NORTH_EAST = 45, NORTH_WEST = 135,
+			SOUTH_WEST = 225, SOUTH_EAST = 315;
+
 	/**
 	 * Should be called with the amount to be moved. This method can be called
 	 * multiple times each frame (perhaps if two inputs are receiving input, or
