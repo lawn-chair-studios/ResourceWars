@@ -6,6 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game.Game;
 
+/**
+ * The main class for {@code ResourceWars}. This class extends
+ * {@link ApplicationAdapter} and owns a {@link Game} instance which is used to
+ * handle the entire game.
+ * 
+ * @author Zeale
+ *
+ */
 public class ResourceWars extends ApplicationAdapter {
 
 	private Game game;

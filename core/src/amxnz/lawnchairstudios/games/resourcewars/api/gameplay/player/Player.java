@@ -2,6 +2,12 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
 
+/**
+ * Represents the player in-game. Stores a reference to an entity.
+ * 
+ * @author Zeale
+ *
+ */
 public class Player {
 
 	public Player(AbstractEntity inGameCharacter) {

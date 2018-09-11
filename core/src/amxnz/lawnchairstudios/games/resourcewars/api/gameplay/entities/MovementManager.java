@@ -2,6 +2,12 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
+/**
+ * A class that handles movement (usually for an entity).
+ * 
+ * @author Zeale
+ *
+ */
 public class MovementManager {
 
 	// Note that with this API, holding W and D (to move upwards and to the right),
@@ -9,13 +15,13 @@ public class MovementManager {
 	// upwards and to the right with a controller (in which case they'd travel at 1
 	// m/s).
 
-	private final ObservableValue<Float> x, y, direction, speed;
+	private final ObservableValue<Float> x, y, orientation, speed;
 
-	public MovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> direction,
+	public MovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> orientation,
 			ObservableValue<Float> speed) {
 		this.x = x;
 		this.y = y;
-		this.direction = direction;
+		this.orientation = orientation;
 		this.speed = speed;
 	}
 
@@ -50,7 +56,7 @@ public class MovementManager {
 	/**
 	 * Should be called once each frame, after all {@link #push(float, float)}
 	 * operations are called, to calculate and apply the pushes to {@link #x},
-	 * {@link #y}, and {@link #direction}.
+	 * {@link #y}, and {@link #orientation}.
 	 */
 	public void calculate() {
 		x.setValue(x.getValue() + cx * speed.getValue());
@@ -58,7 +64,7 @@ public class MovementManager {
 		float dir = (float) Math.toDegrees(Math.atan(cy / cx));
 		if (cx < 0)
 			dir += 180;
-		direction.setValue(dir);
+		orientation.setValue(dir);
 	}
 
 }
