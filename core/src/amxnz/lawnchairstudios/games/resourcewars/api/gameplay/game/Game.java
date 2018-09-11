@@ -1,4 +1,4 @@
-package amxnz.lawnchairstudios.games.resourcewars.api.gameplay;
+package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -155,6 +156,10 @@ public class Game {
 	}
 
 	private Player mainCharacter;
+	
+	public Player getMainCharacter() {
+		return mainCharacter;
+	}
 
 	public void render() {
 		camera.update();

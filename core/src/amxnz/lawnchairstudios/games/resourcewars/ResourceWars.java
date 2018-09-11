@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
-import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.Game;
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game.Game;
 
 public class ResourceWars extends ApplicationAdapter {
 
