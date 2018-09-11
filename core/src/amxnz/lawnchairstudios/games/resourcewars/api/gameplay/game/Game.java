@@ -156,9 +156,14 @@ public class Game {
 	}
 
 	private Player mainCharacter;
-	
+	private GameInputProcessor gameInputProcessor = new GameInputProcessor(this);
+
 	public Player getMainCharacter() {
 		return mainCharacter;
+	}
+
+	{
+		Gdx.input.setInputProcessor(gameInputProcessor);
 	}
 
 	public void render() {
