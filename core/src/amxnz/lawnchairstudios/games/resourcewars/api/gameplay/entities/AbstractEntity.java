@@ -23,7 +23,7 @@ import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue
 public abstract class AbstractEntity {
 
 	private final ObservableValue<Float> x = new ObservableValue<Float>(0f), y = new ObservableValue<Float>(0f),
-			direction = new ObservableValue<Float>(0f) {
+			orientation = new ObservableValue<Float>(0f) {
 				@Override
 				public void setValue(Float value) {
 					if ((value = value % 360) < 0)
@@ -33,38 +33,38 @@ public abstract class AbstractEntity {
 			}, speed = new ObservableValue<Float>(1f);
 	// direction is in degrees
 
-	private final MovementManager mover = new MovementManager(x, y, direction, speed);
+	private final MovementManager mover = new MovementManager(x, y, orientation, speed);
 
-	private final LinkedList<DirectionHandler> directionHandlers = new LinkedList<DirectionHandler>();
-	private final ObservableValue<DirectionHandler> currentHandler = new ObservableValue<DirectionHandler>(null);
+	private final LinkedList<OrientationHandler> orientationHandlers = new LinkedList<OrientationHandler>();
+	private final ObservableValue<OrientationHandler> currentHandler = new ObservableValue<OrientationHandler>(null);
 
-	public void addDirectionHandler(DirectionHandler handler) {
-		int pos = Collections.binarySearch(directionHandlers, handler);
+	public void addOrientationHandler(OrientationHandler handler) {
+		int pos = Collections.binarySearch(orientationHandlers, handler);
 		if (!(pos < 0))
-			throw new RuntimeException("DirectionHandler with same degree already exists.");
+			throw new RuntimeException("OrientationHandler with same degree already exists.");
 		else
-			directionHandlers.add(-(pos + 1), handler);
+			orientationHandlers.add(-(pos + 1), handler);
 	}
 
 	{
-		direction.addObserver(new Observer<Float>() {
+		orientation.addObserver(new Observer<Float>() {
 
 			@Override
 			public void espy(Float oldValue, Float newValue) {
 				// TODO Binary search for value, then find the closest match and use it. The
 				// picked handler will be stuffed into #currentHandler and will control the the
 				// direction the player faces when he/she moves.
-				if (newValue < directionHandlers.getFirst().getDirection())
-					currentHandler.setValue(directionHandlers.getFirst());
-				else if (newValue > directionHandlers.getLast().getDirection())
-					currentHandler.setValue(directionHandlers.getLast());
+				if (newValue < orientationHandlers.getFirst().getDirection())
+					currentHandler.setValue(orientationHandlers.getFirst());
+				else if (newValue > orientationHandlers.getLast().getDirection())
+					currentHandler.setValue(orientationHandlers.getLast());
 
-				int lowBar = 0, highBar = directionHandlers.size() - 1;
+				int lowBar = 0, highBar = orientationHandlers.size() - 1;
 
 				while (lowBar <= highBar) {
 					int mid = (highBar + lowBar) / 2;
 
-					DirectionHandler midHandler = directionHandlers.get(mid);
+					OrientationHandler midHandler = orientationHandlers.get(mid);
 					if (newValue < midHandler.getDirection())
 						highBar = mid - 1;
 					else if (newValue > midHandler.getDirection())
@@ -74,17 +74,17 @@ public abstract class AbstractEntity {
 						return;
 					}
 				}
-				DirectionHandler lowHandler = directionHandlers.get(lowBar),
-						highHandler = directionHandlers.get(highBar);
+				OrientationHandler lowHandler = orientationHandlers.get(lowBar),
+						highHandler = orientationHandlers.get(highBar);
 				currentHandler.setValue(
 						(lowHandler.getDirection() - newValue) < (newValue - highHandler.getDirection()) ? lowHandler
 								: highHandler);
 			}
 		});
 
-		currentHandler.addObserver(new Observer<DirectionHandler>() {
+		currentHandler.addObserver(new Observer<OrientationHandler>() {
 			@Override
-			public void espy(DirectionHandler oldValue, DirectionHandler newValue) {
+			public void espy(OrientationHandler oldValue, OrientationHandler newValue) {
 				if (newValue == oldValue)
 					return;
 			}
@@ -149,8 +149,8 @@ public abstract class AbstractEntity {
 		return y.getValue();
 	}
 
-	public float getDirection() {
-		return direction.getValue();
+	public float getOrientation() {
+		return orientation.getValue();
 	}
 
 	public void setX(float value) {
@@ -161,8 +161,8 @@ public abstract class AbstractEntity {
 		y.setValue(value);
 	}
 
-	public void setDirection(float value) {
-		direction.setValue(value);
+	public void setOrientation(float value) {
+		orientation.setValue(value);
 	}
 
 	public MovementManager getMover() {
@@ -171,12 +171,12 @@ public abstract class AbstractEntity {
 
 	private float elapsedAnimationTime;
 
-	private class EntityOrientationHandler extends DirectionHandler {
+	private class EntityOrientationHandler extends OrientationHandler {
 
 		private final Animation<Sprite> animation;
 
-		public EntityOrientationHandler(float direction, Animation<Sprite> animation) {
-			super(direction);
+		public EntityOrientationHandler(float targetOrientation, Animation<Sprite> animation) {
+			super(targetOrientation);
 			this.animation = animation;
 		}
 
