@@ -18,6 +18,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
 
+/**
+ * The {@link Game} class is used to manage and present the game itself.
+ * 
+ * @author Zeale
+ *
+ */
 public class Game {
 
 	public void resize(int width, int height) {
