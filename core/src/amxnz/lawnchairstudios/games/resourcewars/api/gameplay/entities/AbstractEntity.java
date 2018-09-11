@@ -38,10 +38,10 @@ public abstract class AbstractEntity {
 	private final LinkedList<OrientationHandler> orientationHandlers = new LinkedList<OrientationHandler>();
 	private final ObservableValue<OrientationHandler> currentHandler = new ObservableValue<OrientationHandler>(null);
 
-	public void addDirectionHandler(OrientationHandler handler) {
+	public void addOrientationHandler(OrientationHandler handler) {
 		int pos = Collections.binarySearch(orientationHandlers, handler);
 		if (!(pos < 0))
-			throw new RuntimeException("DirectionHandler with same degree already exists.");
+			throw new RuntimeException("OrientationHandler with same degree already exists.");
 		else
 			orientationHandlers.add(-(pos + 1), handler);
 	}
@@ -149,7 +149,7 @@ public abstract class AbstractEntity {
 		return y.getValue();
 	}
 
-	public float getDirection() {
+	public float getOrientation() {
 		return orientation.getValue();
 	}
 
@@ -161,7 +161,7 @@ public abstract class AbstractEntity {
 		y.setValue(value);
 	}
 
-	public void setDirection(float value) {
+	public void setOrientation(float value) {
 		orientation.setValue(value);
 	}
 
@@ -175,8 +175,8 @@ public abstract class AbstractEntity {
 
 		private final Animation<Sprite> animation;
 
-		public EntityOrientationHandler(float direction, Animation<Sprite> animation) {
-			super(direction);
+		public EntityOrientationHandler(float targetOrientation, Animation<Sprite> animation) {
+			super(targetOrientation);
 			this.animation = animation;
 		}
 
