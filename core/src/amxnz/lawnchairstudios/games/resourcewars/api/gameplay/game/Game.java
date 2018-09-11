@@ -173,8 +173,11 @@ public class Game {
 	}
 
 	public void render() {
-		camera.update();
+		gameInputProcessor.render();
+
 		currentLevel.render();
+
+		camera.update();
 	}
 
 	public void dispose() {
