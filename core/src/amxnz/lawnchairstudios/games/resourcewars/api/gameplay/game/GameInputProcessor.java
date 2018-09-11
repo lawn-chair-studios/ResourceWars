@@ -2,6 +2,14 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game;
 
 import com.badlogic.gdx.InputProcessor;
 
+/**
+ * A helper class for {@link Game}, this class handles and processes input,
+ * using its reference to {@link Game} as needed. This class may be moved into
+ * {@link Game} later on.
+ * 
+ * @author Zeale
+ *
+ */
 class GameInputProcessor implements InputProcessor {
 
 	// This class processes input and handles it using the Game object as needed.

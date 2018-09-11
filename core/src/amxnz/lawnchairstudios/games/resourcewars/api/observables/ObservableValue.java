@@ -3,6 +3,13 @@ package amxnz.lawnchairstudios.games.resourcewars.api.observables;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Stores a value that can be observed.
+ * 
+ * @author Zeale
+ *
+ * @param <T> The type of value stored in this object.
+ */
 public class ObservableValue<T> {
 	private T value;
 
