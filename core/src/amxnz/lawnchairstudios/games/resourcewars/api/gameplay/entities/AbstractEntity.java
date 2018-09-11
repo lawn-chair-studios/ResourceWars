@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -28,12 +29,10 @@ public abstract class AbstractEntity {
 
 	private final MovementManager mover = new MovementManager(x, y, direction, speed);
 
-	private final LinkedList<DirectionHandler<Sprite>> directionHandlers = new LinkedList<DirectionHandler<Sprite>>();
-	private final ObservableValue<DirectionHandler<Sprite>> currentHandler = new ObservableValue<DirectionHandler<Sprite>>(
-			null);
-	private float elapsedAnimationTime;
+	private final LinkedList<DirectionHandler> directionHandlers = new LinkedList<DirectionHandler>();
+	private final ObservableValue<DirectionHandler> currentHandler = new ObservableValue<DirectionHandler>(null);
 
-	public void addDirectionHandler(DirectionHandler<Sprite> handler) {
+	public void addDirectionHandler(DirectionHandler handler) {
 		int pos = Collections.binarySearch(directionHandlers, handler);
 		if (!(pos < 0))
 			throw new RuntimeException("DirectionHandler with same degree already exists.");
@@ -59,7 +58,7 @@ public abstract class AbstractEntity {
 				while (lowBar <= highBar) {
 					int mid = (highBar + lowBar) / 2;
 
-					DirectionHandler<Sprite> midHandler = directionHandlers.get(mid);
+					DirectionHandler midHandler = directionHandlers.get(mid);
 					if (newValue < midHandler.getDirection())
 						highBar = mid - 1;
 					else if (newValue > midHandler.getDirection())
@@ -69,7 +68,7 @@ public abstract class AbstractEntity {
 						return;
 					}
 				}
-				DirectionHandler<Sprite> lowHandler = directionHandlers.get(lowBar),
+				DirectionHandler lowHandler = directionHandlers.get(lowBar),
 						highHandler = directionHandlers.get(highBar);
 				currentHandler.setValue(
 						(lowHandler.getDirection() - newValue) < (newValue - highHandler.getDirection()) ? lowHandler
@@ -77,12 +76,11 @@ public abstract class AbstractEntity {
 			}
 		});
 
-		currentHandler.addObserver(new Observer<DirectionHandler<?>>() {
+		currentHandler.addObserver(new Observer<DirectionHandler>() {
 			@Override
-			public void espy(DirectionHandler<?> oldValue, DirectionHandler<?> newValue) {
+			public void espy(DirectionHandler oldValue, DirectionHandler newValue) {
 				if (newValue == oldValue)
 					return;
-				elapsedAnimationTime = 0;
 			}
 		});
 	}
@@ -165,11 +163,31 @@ public abstract class AbstractEntity {
 		return mover;
 	}
 
-	public void render(Batch batch) {
+	private float elapsedAnimationTime;
 
-		Sprite sprite = currentHandler.getValue().getAnimation()
-				.getKeyFrame(elapsedAnimationTime += Gdx.graphics.getDeltaTime(), true);
-		sprite.setPosition(getX(), getY());
-		sprite.draw(batch);
+	private class EntityOrientationHandler extends DirectionHandler {
+
+		private final Animation<Sprite> animation;
+
+		public EntityOrientationHandler(float direction, Animation<Sprite> animation) {
+			super(direction);
+			this.animation = animation;
+		}
+
+		public Animation<Sprite> getAnimation() {
+			return animation;
+		}
+
+		@Override
+		public void render(Batch batch) {
+			Sprite sprite = getAnimation().getKeyFrame(elapsedAnimationTime += Gdx.graphics.getDeltaTime(), true);
+			sprite.setPosition(getX(), getY());
+			sprite.draw(batch);
+		}
+
+	}
+
+	public void render(Batch batch) {
+		currentHandler.getValue().render(batch);
 	}
 }
