@@ -24,6 +24,10 @@ public class ObservableValue<T> {
 		observers.add(observer);
 	}
 
+	public void removeObserver(Object observer) {
+		observers.remove(observer);
+	}
+
 	public void setValue(T value) {
 		for (Observer<? super T> o : observers)
 			o.espy(this.value, value);
