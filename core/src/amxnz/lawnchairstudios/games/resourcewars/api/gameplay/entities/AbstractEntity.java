@@ -195,8 +195,8 @@ public abstract class AbstractEntity {
 		}
 
 		protected final void draw(Sprite sprite, Batch batch) {
-			sprite.setCenterX(getX());
-			sprite.setCenterY(getY());
+			sprite.setX(getX());
+			sprite.setY(getY());
 			sprite.draw(batch);
 		}
 

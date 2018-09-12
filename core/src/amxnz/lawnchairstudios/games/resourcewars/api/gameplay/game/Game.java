@@ -38,7 +38,8 @@ public class Game {
 	}
 
 	public final ObservableValue<Integer> windowWidth = new ObservableValue<Integer>(-1),
-			windowHeight = new ObservableValue<Integer>(-1);
+			windowHeight = new ObservableValue<Integer>(-1), tileWidth = new ObservableValue<Integer>(-1),
+			tileHeight = new ObservableValue<Integer>(-1);
 
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private Viewport viewport;
@@ -157,27 +158,27 @@ public class Game {
 	private final Level currentLevel = new Level("Start");// TODO Remove test code
 
 	public Game(ViewportType stretch) {
+
+		float worldWidth = 8;
+
 		switch (stretch) {
 		default:
 		case FIT:
-			viewport = new FitViewport(5, 5, camera);
+			viewport = new FitViewport(worldWidth, worldWidth, camera);
 			break;
 		case STRETCH:
-			viewport = new StretchViewport(5, 5, camera);
+			viewport = new StretchViewport(worldWidth, worldWidth, camera);
 			break;
 		case GROW:
 			viewport = new ScreenViewport(camera);
-
-			// 1/32 = 1 unit every 32 pixels.
-			// We want five units every (minimum screen size).
 
 			int width = Gdx.graphics.getWidth();
 			int height = Gdx.graphics.getHeight();
 			int min = width < height ? width : height;
 
-			((ScreenViewport) viewport).setUnitsPerPixel(5f / min);
+			((ScreenViewport) viewport).setUnitsPerPixel(worldWidth / min);
+			setViewportWorldSize(worldWidth, worldWidth);
 		}
-		setViewportWorldSize(5, 5);
 		viewport.apply(true);
 	}
 
@@ -187,6 +188,15 @@ public class Game {
 
 				private final Sprite texture = new Sprite(new Texture(
 						"amxnz/lawnchairstudios/games/resourcewars/assets/characters/Stan/backwards/standing.png"));
+				{
+					// We want our sprite's biggest size (either length or width) to fit into
+					// exactly one tile. (Right now, without scaling, each pixel fits into a tile.)
+
+					float width = texture.getWidth();
+					float height = texture.getHeight();
+					texture.setScale(1 / (width < height ? height : width));
+
+				}
 
 				@Override
 				public void render(Batch batch) {
@@ -209,6 +219,9 @@ public class Game {
 		gameInputProcessor.render();
 
 		currentLevel.render();
+
+		getRenderBatch().setProjectionMatrix(camera.combined);
+
 		getRenderBatch().begin();
 		player.getInGameCharacter().render(getRenderBatch());
 		getRenderBatch().end();
