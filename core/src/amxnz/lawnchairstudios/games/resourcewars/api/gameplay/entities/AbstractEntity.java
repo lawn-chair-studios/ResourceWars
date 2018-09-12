@@ -171,6 +171,55 @@ public abstract class AbstractEntity {
 
 	private float elapsedAnimationTime;
 
+	/**
+	 * A class that handles the displaying of an {@link AbstractEntity Entity} at a
+	 * certain orientation.
+	 * 
+	 * @author Zeale
+	 *
+	 */
+	public abstract class OrientationHandler implements Comparable<OrientationHandler> {
+		private final float targetOrientation;
+
+		public OrientationHandler(float targetOrientation) {
+			this.targetOrientation = targetOrientation;
+		}
+
+		public float getDirection() {
+			return targetOrientation;
+		}
+
+		protected final void draw(Sprite sprite, Batch batch) {
+			sprite.setCenterX(getX());
+			sprite.setCenterY(getY());
+			sprite.draw(batch);
+		}
+
+		protected final float getX() {
+			return x.getValue();
+		}
+
+		protected final float getY() {
+			return y.getValue();
+		}
+
+		protected final float getSpeed() {
+			return speed.getValue();
+		}
+
+		protected final float getOrientation() {
+			return orientation.getValue();
+		}
+
+		@Override
+		public int compareTo(OrientationHandler o) {
+			return ((Float) targetOrientation).compareTo(o.targetOrientation);
+		}
+
+		public abstract void render(Batch batch);
+
+	}
+
 	private class EntityOrientationHandler extends OrientationHandler {
 
 		private final Animation<Sprite> animation;

@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -163,6 +165,17 @@ public class Game {
 	}
 
 	private Player player = new Player(new AbstractEntity() {
+		{
+			addOrientationHandler(new OrientationHandler(270) {
+
+				private final Sprite texture = new Sprite(new Texture("amxnz/lawnchairstudios/games/resourcewars/"));
+
+				@Override
+				public void render(Batch batch) {
+					draw(texture, batch);
+				}
+			});
+		}
 	});
 	private GameInputProcessor gameInputProcessor = new GameInputProcessor(this);
 
