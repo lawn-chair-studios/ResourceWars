@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
 
 /**
@@ -161,11 +162,12 @@ public class Game {
 		viewport.apply(true);
 	}
 
-	private Player mainCharacter;
+	private Player player = new Player(new AbstractEntity() {
+	});
 	private GameInputProcessor gameInputProcessor = new GameInputProcessor(this);
 
-	public Player getMainCharacter() {
-		return mainCharacter;
+	public Player getPlayer() {
+		return player;
 	}
 
 	{

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.MovementManager;
@@ -36,7 +37,6 @@ class GameInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		System.out.println("Key is down.");
 		keys.add(keycode);
 		return false;
 	}
@@ -57,7 +57,8 @@ class GameInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		if (button == Input.Buttons.LEFT)
+			System.out.println("x=" + screenX + " y=" + screenY);
 		return false;
 	}
 
@@ -86,7 +87,7 @@ class GameInputProcessor implements InputProcessor {
 	}
 
 	private void movePlayer(float amount, float direction) {
-		game.getMainCharacter().getInGameCharacter().getMover().pushVec(amount, direction);
+		game.getPlayer().getInGameCharacter().getMover().pushVec(amount, direction);
 	}
 
 	private void movePlayer(float direction) {
@@ -102,7 +103,7 @@ class GameInputProcessor implements InputProcessor {
 			movePlayer(MovementManager.EAST);
 		if (keys.contains(W))
 			movePlayer(MovementManager.NORTH);
-		game.getMainCharacter().getInGameCharacter().getMover().calculate();
+		game.getPlayer().getInGameCharacter().getMover().calculate();
 	}
 
 }
