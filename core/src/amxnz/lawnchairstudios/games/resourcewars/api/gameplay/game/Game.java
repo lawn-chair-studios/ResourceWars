@@ -172,8 +172,7 @@ public class Game {
 
 				@Override
 				public void render(Batch batch) {
-					// What about positions??? :-|
-					texture.draw(batch);
+					draw(texture, batch);
 				}
 			});
 		}
