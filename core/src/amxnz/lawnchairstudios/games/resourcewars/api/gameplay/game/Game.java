@@ -164,10 +164,10 @@ public class Game {
 		switch (stretch) {
 		default:
 		case FIT:
-			viewport = new FitViewport(worldWidth, worldWidth, camera);
+			viewport = new FitViewport(worldDimensions, worldDimensions, camera);
 			break;
 		case STRETCH:
-			viewport = new StretchViewport(worldWidth, worldWidth, camera);
+			viewport = new StretchViewport(worldDimensions, worldDimensions, camera);
 			break;
 		case GROW:
 			viewport = new ScreenViewport(camera);
@@ -176,8 +176,8 @@ public class Game {
 			int height = Gdx.graphics.getHeight();
 			int min = width < height ? width : height;
 
-			((ScreenViewport) viewport).setUnitsPerPixel(worldWidth / min);
-			setViewportWorldSize(worldWidth, worldWidth);
+			((ScreenViewport) viewport).setUnitsPerPixel(worldDimensions / min);
+			setViewportWorldSize(worldDimensions, worldDimensions);
 		}
 		viewport.apply(true);
 	}
