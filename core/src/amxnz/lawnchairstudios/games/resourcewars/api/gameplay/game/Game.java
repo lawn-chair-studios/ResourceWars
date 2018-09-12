@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
-import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.OrientationHandler;
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
 
 /**
@@ -173,7 +172,7 @@ public class Game {
 
 				@Override
 				public void render(Batch batch) {
-					//What about positions??? :-|
+					// What about positions??? :-|
 					texture.draw(batch);
 				}
 			});
