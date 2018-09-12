@@ -159,7 +159,7 @@ public class Game {
 
 	public Game(ViewportType stretch) {
 
-		float worldWidth = 8;
+		float worldDimensions = 8;
 
 		switch (stretch) {
 		default:
@@ -188,19 +188,18 @@ public class Game {
 
 				private final Sprite texture = new Sprite(new Texture(
 						"amxnz/lawnchairstudios/games/resourcewars/assets/characters/Stan/backwards/standing.png"));
-				{
-					// We want our sprite's biggest size (either length or width) to fit into
-					// exactly one tile. (Right now, without scaling, each pixel fits into a tile.)
-
-					float width = texture.getWidth();
-					float height = texture.getHeight();
-					texture.setScale(1 / (width < height ? height : width));
-
-				}
+				private final float width = texture.getWidth(), height = texture.getHeight();
+//				{
+//					// We want our sprite's biggest size (either length or width) to fit into
+//					// exactly one tile. (Right now, without scaling, each pixel fits into a tile.)
+//
+//					texture.setScale(1 / (width < height ? height : width));
+//
+//				}
 
 				@Override
 				public void render(Batch batch) {
-					draw(texture, batch);
+					draw(texture, batch, width / height, 1);
 				}
 			});
 		}
