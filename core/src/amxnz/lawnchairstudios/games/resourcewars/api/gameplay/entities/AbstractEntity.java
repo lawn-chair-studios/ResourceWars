@@ -54,10 +54,15 @@ public abstract class AbstractEntity {
 				// TODO Binary search for value, then find the closest match and use it. The
 				// picked handler will be stuffed into #currentHandler and will control the the
 				// direction the player faces when he/she moves.
-				if (newValue < orientationHandlers.getFirst().getDirection())
+				if (orientationHandlers.size() < 1)
+					return;
+				else if (orientationHandlers.size() == 1 || newValue < orientationHandlers.getFirst().getDirection()) {
 					currentHandler.setValue(orientationHandlers.getFirst());
-				else if (newValue > orientationHandlers.getLast().getDirection())
+					return;
+				} else if (newValue > orientationHandlers.getLast().getDirection()) {
 					currentHandler.setValue(orientationHandlers.getLast());
+					return;
+				}
 
 				int lowBar = 0, highBar = orientationHandlers.size() - 1;
 
