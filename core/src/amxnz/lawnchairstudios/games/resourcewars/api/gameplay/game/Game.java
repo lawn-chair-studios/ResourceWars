@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.OrientationHandler;
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
 
 /**
@@ -163,6 +166,18 @@ public class Game {
 	}
 
 	private Player player = new Player(new AbstractEntity() {
+		{
+			addOrientationHandler(new OrientationHandler(270) {
+
+				private final Sprite texture = new Sprite(new Texture("amxnz/lawnchairstudios/games/resourcewars/"));
+
+				@Override
+				public void render(Batch batch) {
+					//What about positions??? :-|
+					texture.draw(batch);
+				}
+			});
+		}
 	});
 	private GameInputProcessor gameInputProcessor = new GameInputProcessor(this);
 
