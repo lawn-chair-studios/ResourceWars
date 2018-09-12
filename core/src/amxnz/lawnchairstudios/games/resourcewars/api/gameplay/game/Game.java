@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
+import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
 /**
  * The {@link Game} class is used to manage and present the game itself.
@@ -31,7 +33,12 @@ public class Game {
 
 	public void resize(int width, int height) {
 		viewport.update(width, height);
+		windowHeight.setValue(height);
+		windowWidth.setValue(width);
 	}
+
+	public final ObservableValue<Integer> windowWidth = new ObservableValue<Integer>(-1),
+			windowHeight = new ObservableValue<Integer>(-1);
 
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private Viewport viewport;
@@ -137,6 +144,16 @@ public class Game {
 		STRETCH, FIT, GROW;
 	}
 
+	private Batch renderBatch = new SpriteBatch(10);
+
+	public Batch getRenderBatch() {
+		return renderBatch;
+	}
+
+	public void setRenderBatch(Batch renderBatch) {
+		this.renderBatch = renderBatch;
+	}
+
 	private final Level currentLevel = new Level("Start");// TODO Remove test code
 
 	public Game(ViewportType stretch) {
@@ -168,7 +185,8 @@ public class Game {
 		{
 			addOrientationHandler(new OrientationHandler(270) {
 
-				private final Sprite texture = new Sprite(new Texture("amxnz/lawnchairstudios/games/resourcewars/"));
+				private final Sprite texture = new Sprite(new Texture(
+						"amxnz/lawnchairstudios/games/resourcewars/assets/characters/Stan/backwards/standing.png"));
 
 				@Override
 				public void render(Batch batch) {
@@ -191,6 +209,9 @@ public class Game {
 		gameInputProcessor.render();
 
 		currentLevel.render();
+		getRenderBatch().begin();
+		player.getInGameCharacter().render(getRenderBatch());
+		getRenderBatch().end();
 
 		camera.update();
 	}
