@@ -141,8 +141,12 @@ public abstract class AbstractEntity {
 		if (!bound) {
 			if (cameraBindingMap.containsKey(camera))
 				((Binding) cameraBindingMap.get(camera)).unbind();
-		} else if (!cameraBindingMap.containsKey(camera))
+		} else if (!cameraBindingMap.containsKey(camera)) {
 			new Binding(camera);
+			camera.position.x = x.getValue();
+			camera.position.y = y.getValue();
+			camera.update();
+		}
 
 	}
 
@@ -201,11 +205,11 @@ public abstract class AbstractEntity {
 		}
 
 		protected final float getX() {
-			return x.getValue();
+			return AbstractEntity.this.getX();
 		}
 
 		protected final float getY() {
-			return y.getValue();
+			return AbstractEntity.this.getY();
 		}
 
 		protected final float getSpeed() {
