@@ -31,6 +31,7 @@ public abstract class AbstractEntity {
 					super.setValue(value);
 				}
 			}, speed = new ObservableValue<Float>(1f);
+
 	// direction is in degrees
 
 	private final MovementManager mover = new MovementManager(x, y, orientation, speed);
@@ -128,6 +129,7 @@ public abstract class AbstractEntity {
 				AbstractEntity.this.x.addObserver(x);
 				AbstractEntity.this.y.addObserver(y);
 				cameraBindingMap.put(camera, this);
+
 			}
 
 			public void unbind() {
@@ -143,8 +145,6 @@ public abstract class AbstractEntity {
 				((Binding) cameraBindingMap.get(camera)).unbind();
 		} else if (!cameraBindingMap.containsKey(camera)) {
 			new Binding(camera);
-			camera.position.x = x.getValue();
-			camera.position.y = y.getValue();
 			camera.update();
 		}
 
@@ -174,6 +174,14 @@ public abstract class AbstractEntity {
 		orientation.setValue(value);
 	}
 
+	public float getXCameraShift() {
+		return currentHandler.getValue().xCameraShift;
+	}
+
+	public float getYCameraShift() {
+		return currentHandler.getValue().yCameraShift;
+	}
+
 	public MovementManager getMover() {
 		return mover;
 	}
@@ -189,6 +197,7 @@ public abstract class AbstractEntity {
 	 */
 	public abstract class OrientationHandler implements Comparable<OrientationHandler> {
 		private final float targetOrientation;
+		protected float xCameraShift, yCameraShift;
 
 		public OrientationHandler(float targetOrientation) {
 			this.targetOrientation = targetOrientation;
@@ -205,7 +214,7 @@ public abstract class AbstractEntity {
 			// The above code draws the sprite in some weird position.
 			draw(sprite, batch, 1, 1);
 		}
-		
+
 		protected final void draw(Sprite sprite, Batch batch, float widthInPixels, float heightInPixels) {
 			batch.draw(sprite, getX(), getY(), widthInPixels, heightInPixels);
 		}

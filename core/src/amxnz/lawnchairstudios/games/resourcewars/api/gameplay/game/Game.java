@@ -197,6 +197,11 @@ public class Game {
 //
 //				}
 
+				{
+					xCameraShift = width / height / 2;
+					yCameraShift = .5f;
+				}
+
 				@Override
 				public void render(Batch batch) {
 					draw(texture, batch, width / height, 1);
@@ -212,6 +217,7 @@ public class Game {
 
 	{
 		Gdx.input.setInputProcessor(gameInputProcessor);
+		player.bindToCamera(camera);
 	}
 
 	public void render() {
