@@ -68,6 +68,7 @@ public class MovementManager {
 		if (cx < 0)
 			dir += 180;
 		orientation.setValue(dir);
+		cx = cy = 0;
 	}
 
 }

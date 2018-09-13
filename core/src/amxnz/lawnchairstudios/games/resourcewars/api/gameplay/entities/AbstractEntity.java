@@ -31,6 +31,7 @@ public abstract class AbstractEntity {
 					super.setValue(value);
 				}
 			}, speed = new ObservableValue<Float>(1f);
+
 	// direction is in degrees
 
 	private final MovementManager mover = new MovementManager(x, y, orientation, speed);
@@ -54,10 +55,15 @@ public abstract class AbstractEntity {
 				// TODO Binary search for value, then find the closest match and use it. The
 				// picked handler will be stuffed into #currentHandler and will control the the
 				// direction the player faces when he/she moves.
-				if (newValue < orientationHandlers.getFirst().getDirection())
+				if (orientationHandlers.size() < 1)
+					return;
+				else if (orientationHandlers.size() == 1 || newValue < orientationHandlers.getFirst().getDirection()) {
 					currentHandler.setValue(orientationHandlers.getFirst());
-				else if (newValue > orientationHandlers.getLast().getDirection())
+					return;
+				} else if (newValue > orientationHandlers.getLast().getDirection()) {
 					currentHandler.setValue(orientationHandlers.getLast());
+					return;
+				}
 
 				int lowBar = 0, highBar = orientationHandlers.size() - 1;
 
@@ -123,6 +129,7 @@ public abstract class AbstractEntity {
 				AbstractEntity.this.x.addObserver(x);
 				AbstractEntity.this.y.addObserver(y);
 				cameraBindingMap.put(camera, this);
+
 			}
 
 			public void unbind() {
@@ -136,8 +143,10 @@ public abstract class AbstractEntity {
 		if (!bound) {
 			if (cameraBindingMap.containsKey(camera))
 				((Binding) cameraBindingMap.get(camera)).unbind();
-		} else if (!cameraBindingMap.containsKey(camera))
+		} else if (!cameraBindingMap.containsKey(camera)) {
 			new Binding(camera);
+			camera.update();
+		}
 
 	}
 
@@ -165,6 +174,14 @@ public abstract class AbstractEntity {
 		orientation.setValue(value);
 	}
 
+	public float getXCameraShift() {
+		return currentHandler.getValue().xCameraShift;
+	}
+
+	public float getYCameraShift() {
+		return currentHandler.getValue().yCameraShift;
+	}
+
 	public MovementManager getMover() {
 		return mover;
 	}
@@ -180,6 +197,7 @@ public abstract class AbstractEntity {
 	 */
 	public abstract class OrientationHandler implements Comparable<OrientationHandler> {
 		private final float targetOrientation;
+		protected float xCameraShift, yCameraShift;
 
 		public OrientationHandler(float targetOrientation) {
 			this.targetOrientation = targetOrientation;
@@ -190,17 +208,23 @@ public abstract class AbstractEntity {
 		}
 
 		protected final void draw(Sprite sprite, Batch batch) {
-			sprite.setCenterX(getX());
-			sprite.setCenterY(getY());
-			sprite.draw(batch);
+//			sprite.setX(getX());
+//			sprite.setY(getY());
+//			sprite.draw(batch);
+			// The above code draws the sprite in some weird position.
+			draw(sprite, batch, 1, 1);
+		}
+
+		protected final void draw(Sprite sprite, Batch batch, float widthInPixels, float heightInPixels) {
+			batch.draw(sprite, getX(), getY(), widthInPixels, heightInPixels);
 		}
 
 		protected final float getX() {
-			return x.getValue();
+			return AbstractEntity.this.getX();
 		}
 
 		protected final float getY() {
-			return y.getValue();
+			return AbstractEntity.this.getY();
 		}
 
 		protected final float getSpeed() {
