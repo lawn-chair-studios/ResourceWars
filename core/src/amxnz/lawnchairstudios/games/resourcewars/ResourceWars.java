@@ -10,7 +10,7 @@ import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game.Game;
  * The main class for {@code ResourceWars}. This class extends
  * {@link ApplicationAdapter} and owns a {@link Game} instance which is used to
  * handle the entire game.
- * 
+ *
  * @author Zeale
  *
  */
@@ -24,15 +24,15 @@ public class ResourceWars extends ApplicationAdapter {
 	}
 
 	@Override
+	public void dispose() {
+		game.dispose();
+	}
+
+	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.render();
-	}
-
-	@Override
-	public void dispose() {
-		game.dispose();
 	}
 
 	@Override
