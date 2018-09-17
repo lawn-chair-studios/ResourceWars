@@ -159,7 +159,7 @@ public class Game {
 
 	public Game(ViewportType stretch) {
 
-		float worldDimensions = 8;
+		float worldDimensions = 5;
 
 		switch (stretch) {
 		default:
