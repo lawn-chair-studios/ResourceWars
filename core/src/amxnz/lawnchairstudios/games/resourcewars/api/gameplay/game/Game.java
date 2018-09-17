@@ -155,11 +155,11 @@ public class Game {
 		this.renderBatch = renderBatch;
 	}
 
-	private final Level currentLevel = new Level("Start");// TODO Remove test code
+	private final Level currentLevel = new Level("TestMap-1");// TODO Remove test code
 
 	public Game(ViewportType stretch) {
 
-		float worldDimensions = 5;
+		float worldDimensions = 12;
 
 		switch (stretch) {
 		default:
