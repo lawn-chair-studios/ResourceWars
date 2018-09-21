@@ -19,7 +19,7 @@ import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.MovementM
  * A helper class for {@link Game}, this class handles and processes input,
  * using its reference to {@link Game} as needed. This class may be moved into
  * {@link Game} later on.
- * 
+ *
  * @author Zeale
  *
  */
@@ -29,7 +29,7 @@ class GameInputProcessor implements InputProcessor {
 
 	private final Game game;
 
-	private final List<Integer> keys = new ArrayList<Integer>(15);
+	private final List<Integer> keys = new ArrayList<>(15);
 
 	public GameInputProcessor(Game game) {
 		this.game = game;
@@ -42,35 +42,16 @@ class GameInputProcessor implements InputProcessor {
 	}
 
 	@Override
-	public boolean keyUp(int keycode) {
-		for (Iterator<Integer> iterator = keys.iterator(); iterator.hasNext();)
-			if (iterator.next() == keycode)
-				iterator.remove();
-		return false;
-	}
-
-	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Input.Buttons.LEFT)
-			System.out.println("x=" + screenX + " y=" + screenY);
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
+	public boolean keyUp(int keycode) {
+		for (Iterator<Integer> iterator = keys.iterator(); iterator.hasNext();)
+			if (iterator.next() == keycode)
+				iterator.remove();
 		return false;
 	}
 
@@ -80,18 +61,12 @@ class GameInputProcessor implements InputProcessor {
 		return false;
 	}
 
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
+	private void movePlayer(float direction) {
+		movePlayer(1 * Gdx.graphics.getDeltaTime(), direction);
 	}
 
 	private void movePlayer(float amount, float direction) {
 		game.getPlayer().getInGameCharacter().getMover().pushVec(amount, direction);
-	}
-
-	private void movePlayer(float direction) {
-		movePlayer(1 * Gdx.graphics.getDeltaTime(), direction);
 	}
 
 	public void render() {
@@ -104,6 +79,31 @@ class GameInputProcessor implements InputProcessor {
 		if (keys.contains(W))
 			movePlayer(MovementManager.NORTH);
 		game.getPlayer().getInGameCharacter().getMover().calculate();
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if (button == Input.Buttons.LEFT)
+			System.out.println("x=" + screenX + " y=" + screenY);
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

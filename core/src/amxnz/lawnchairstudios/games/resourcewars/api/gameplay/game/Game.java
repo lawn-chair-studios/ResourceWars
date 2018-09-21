@@ -21,86 +21,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
-import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
 /**
  * The {@link Game} class is used to manage and present the game itself.
- * 
+ *
  * @author Zeale
  *
  */
 public class Game {
-
-	public void resize(int width, int height) {
-		viewport.update(width, height);
-		windowHeight.setValue(height);
-		windowWidth.setValue(width);
-	}
-
-	public final ObservableValue<Integer> windowWidth = new ObservableValue<Integer>(-1),
-			windowHeight = new ObservableValue<Integer>(-1), tileWidth = new ObservableValue<Integer>(-1),
-			tileHeight = new ObservableValue<Integer>(-1);
-
-	private final OrthographicCamera camera = new OrthographicCamera();
-	private Viewport viewport;
-
-	/**
-	 * <p>
-	 * Sets this {@link Game}'s {@link Game#viewport viewport} to be the specified
-	 * viewport, and then applies the viewport.
-	 * </p>
-	 * <p>
-	 * 
-	 * <pre>
-	 * <code>(this.viewport = newViewport).apply(true);</code>
-	 * </pre>
-	 * </p>
-	 * 
-	 * @param newViewport The new {@link Viewport}
-	 */
-	public void setViewport(Viewport newViewport) {
-		(viewport = newViewport).apply(true);
-	}
-
-	/**
-	 * <p>
-	 * Sets this Game's Viewport's world size.
-	 * </p>
-	 * 
-	 * @param width  The new viewport's world width (in game units).
-	 * @param height The new viewport's world height (also in game units).
-	 */
-	public void setViewportWorldSize(float width, float height) {
-		viewport.setWorldSize(width, height);
-	}
-
-	public Viewport getViewport() {
-		return viewport;
-	}
-
-	// TODO Sort?
-	private final List<WeakReference<Level>> levels = new ArrayList<WeakReference<Level>>();
-
-	protected Level loadLevel(String id) {
-		return new Level(id);
-	}
-
-	protected Level getLevel(String id) {
-		for (Iterator<WeakReference<Level>> iterator = levels.iterator(); iterator.hasNext();) {
-			WeakReference<Level> wr = iterator.next();
-			if (wr.get() == null)
-				iterator.remove();
-			else if (idsEqual(wr.get().getId(), id))
-				return wr.get();
-		}
-		Level level = loadLevel(id);
-		levels.add(new WeakReference<Game.Level>(level));
-		return level;
-	}
-
-	private static boolean idsEqual(String id1, String id2) {
-		return id1.equalsIgnoreCase(id2);
-	}
 
 	public class Level {
 
@@ -118,6 +46,15 @@ public class Game {
 					1 / (float) map.getProperties().get("tilewidth", Integer.class));
 		}
 
+		public void dispose() {
+			renderer.dispose();
+		}
+
+		@Override
+		protected void finalize() throws Throwable {
+			dispose();
+		}
+
 		public String getId() {
 			return id;
 		}
@@ -125,18 +62,10 @@ public class Game {
 		public void render() {
 			renderer.setView(camera);
 			renderer.render();
-		}
+		};
 
 		public void saveObjects() {
 			// TODO Code
-		}
-
-		protected void finalize() throws Throwable {
-			dispose();
-		};
-
-		public void dispose() {
-			renderer.dispose();
 		}
 
 	}
@@ -145,42 +74,21 @@ public class Game {
 		STRETCH, FIT, GROW;
 	}
 
+	private static boolean idsEqual(String id1, String id2) {
+		return id1.equalsIgnoreCase(id2);
+	}
+
+	private final OrthographicCamera camera = new OrthographicCamera();
+
+	float worldDimensions = 12;
+	private Viewport viewport;
+
+	// TODO Sort?
+	private final List<WeakReference<Level>> levels = new ArrayList<>();
+
 	private Batch renderBatch = new SpriteBatch(10);
 
-	public Batch getRenderBatch() {
-		return renderBatch;
-	}
-
-	public void setRenderBatch(Batch renderBatch) {
-		this.renderBatch = renderBatch;
-	}
-
-	private final Level currentLevel = new Level("TestMap-1");// TODO Remove test code
-
-	public Game(ViewportType stretch) {
-
-		float worldDimensions = 12;
-
-		switch (stretch) {
-		default:
-		case FIT:
-			viewport = new FitViewport(worldDimensions, worldDimensions, camera);
-			break;
-		case STRETCH:
-			viewport = new StretchViewport(worldDimensions, worldDimensions, camera);
-			break;
-		case GROW:
-			viewport = new ScreenViewport(camera);
-
-			int width = Gdx.graphics.getWidth();
-			int height = Gdx.graphics.getHeight();
-			int min = width < height ? width : height;
-
-			((ScreenViewport) viewport).setUnitsPerPixel(worldDimensions / min);
-			setViewportWorldSize(worldDimensions, worldDimensions);
-		}
-		viewport.apply(true);
-	}
+	private final Level currentLevel = new Level("Start");// TODO Remove test code
 
 	private Player player = new Player(new AbstractEntity() {
 		{
@@ -209,15 +117,70 @@ public class Game {
 			});
 		}
 	});
+
 	private GameInputProcessor gameInputProcessor = new GameInputProcessor(this);
+
+	{
+		Gdx.input.setInputProcessor(gameInputProcessor);
+		player.bindToCamera(camera);
+	}
+
+	public Game(ViewportType stretch) {
+
+		float worldDimensions = 8;
+
+		switch (stretch) {
+		default:
+		case FIT:
+			viewport = new FitViewport(worldDimensions, worldDimensions, camera);
+			break;
+		case STRETCH:
+			viewport = new StretchViewport(worldDimensions, worldDimensions, camera);
+			break;
+		case GROW:
+			viewport = new ScreenViewport(camera);
+
+			int width = Gdx.graphics.getWidth();
+			int height = Gdx.graphics.getHeight();
+			int min = width < height ? width : height;
+
+			((ScreenViewport) viewport).setUnitsPerPixel(worldDimensions / min);
+			setViewportWorldSize(worldDimensions, worldDimensions);
+		}
+		viewport.apply(true);
+	}
+
+	public void dispose() {
+		currentLevel.dispose();
+	}
+
+	protected Level getLevel(String id) {
+		for (Iterator<WeakReference<Level>> iterator = levels.iterator(); iterator.hasNext();) {
+			WeakReference<Level> wr = iterator.next();
+			if (wr.get() == null)
+				iterator.remove();
+			else if (idsEqual(wr.get().getId(), id))
+				return wr.get();
+		}
+		Level level = loadLevel(id);
+		levels.add(new WeakReference<>(level));
+		return level;
+	}
 
 	public Player getPlayer() {
 		return player;
 	}
 
-	{
-		Gdx.input.setInputProcessor(gameInputProcessor);
-		player.bindToCamera(camera);
+	public Batch getRenderBatch() {
+		return renderBatch;
+	}
+
+	public Viewport getViewport() {
+		return viewport;
+	}
+
+	protected Level loadLevel(String id) {
+		return new Level(id);
 	}
 
 	public void render() {
@@ -234,7 +197,41 @@ public class Game {
 		camera.update();
 	}
 
-	public void dispose() {
-		currentLevel.dispose();
+	public void resize(int width, int height) {
+		viewport.update(width, height);
+	}
+
+	public void setRenderBatch(Batch renderBatch) {
+		this.renderBatch = renderBatch;
+	}
+
+	/**
+	 * <p>
+	 * Sets this {@link Game}'s {@link Game#viewport viewport} to be the specified
+	 * viewport, and then applies the viewport.
+	 * </p>
+	 * <p>
+	 *
+	 * <pre>
+	 * <code>(this.viewport = newViewport).apply(true);</code>
+	 * </pre>
+	 * </p>
+	 *
+	 * @param newViewport The new {@link Viewport}
+	 */
+	public void setViewport(Viewport newViewport) {
+		(viewport = newViewport).apply(true);
+	}
+
+	/**
+	 * <p>
+	 * Sets this Game's Viewport's world size.
+	 * </p>
+	 *
+	 * @param width  The new viewport's world width (in game units).
+	 * @param height The new viewport's world height (also in game units).
+	 */
+	public void setViewportWorldSize(float width, float height) {
+		viewport.setWorldSize(width, height);
 	}
 }

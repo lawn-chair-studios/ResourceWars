@@ -4,7 +4,7 @@ import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue
 
 /**
  * A class that handles movement (usually for an entity).
- * 
+ *
  * @author Zeale
  *
  */
@@ -15,7 +15,12 @@ public class MovementManager {
 	// upwards and to the right with a controller (in which case they'd travel at 1
 	// m/s).
 
+	public static int NORTH = 90, SOUTH = 270, EAST = 0, WEST = 180, NORTH_EAST = 45, NORTH_WEST = 135,
+			SOUTH_WEST = 225, SOUTH_EAST = 315;
+
 	private final ObservableValue<Float> x, y, orientation, speed;
+
+	private float cx, cy;
 
 	public MovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> orientation,
 			ObservableValue<Float> speed) {
@@ -23,37 +28,6 @@ public class MovementManager {
 		this.y = y;
 		this.orientation = orientation;
 		this.speed = speed;
-	}
-
-	private float cx, cy;
-
-	public static int NORTH = 90, SOUTH = 270, EAST = 0, WEST = 180, NORTH_EAST = 45, NORTH_WEST = 135,
-			SOUTH_WEST = 225, SOUTH_EAST = 315;
-
-	/**
-	 * Should be called with the amount to be moved. This method can be called
-	 * multiple times each frame (perhaps if two inputs are receiving input, or
-	 * something similar).
-	 * 
-	 * @param amount    The amount to be moved.
-	 * @param direction The direction to be moved.
-	 */
-	public void pushVec(float amount, float direction) {
-		pushComp(getXByCos(amount, direction), (float) (Math.sin(Math.toRadians(direction)) * amount));
-	}
-
-	private float getXByCos(float amount, float direction) {
-		return (float) (Math.cos(Math.toRadians(direction)) * amount);
-	}
-
-	@SuppressWarnings("unused")
-	private float getXBySqrt(float amount, float y) {
-		return (float) Math.sqrt(amount * amount - y * y);
-	}
-
-	public void pushComp(float x, float y) {
-		cx += x;
-		cy += y;
 	}
 
 	/**
@@ -69,6 +43,27 @@ public class MovementManager {
 			dir += 180;
 		orientation.setValue(dir);
 		cx = cy = 0;
+	}
+
+	private float getXByCos(float amount, float direction) {
+		return (float) (Math.cos(Math.toRadians(direction)) * amount);
+	}
+
+	public void pushComp(float x, float y) {
+		cx += x;
+		cy += y;
+	}
+
+	/**
+	 * Should be called with the amount to be moved. This method can be called
+	 * multiple times each frame (perhaps if two inputs are receiving input, or
+	 * something similar).
+	 *
+	 * @param amount    The amount to be moved.
+	 * @param direction The direction to be moved.
+	 */
+	public void pushVec(float amount, float direction) {
+		pushComp(getXByCos(amount, direction), (float) (Math.sin(Math.toRadians(direction)) * amount));
 	}
 
 }
