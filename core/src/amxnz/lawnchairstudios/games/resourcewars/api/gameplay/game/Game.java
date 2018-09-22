@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities.AbstractEntity;
 import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
-import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 
 /**
  * The {@link Game} class is used to manage and present the game itself.
@@ -79,12 +78,9 @@ public class Game {
 		return id1.equalsIgnoreCase(id2);
 	}
 
-	public final ObservableValue<Integer> windowWidth = new ObservableValue<>(-1),
-			windowHeight = new ObservableValue<>(-1), tileWidth = new ObservableValue<>(-1),
-			tileHeight = new ObservableValue<>(-1);
-
 	private final OrthographicCamera camera = new OrthographicCamera();
 
+	float worldDimensions = 12;
 	private Viewport viewport;
 
 	// TODO Sort?
@@ -203,8 +199,6 @@ public class Game {
 
 	public void resize(int width, int height) {
 		viewport.update(width, height);
-		windowHeight.setValue(height);
-		windowWidth.setValue(width);
 	}
 
 	public void setRenderBatch(Batch renderBatch) {

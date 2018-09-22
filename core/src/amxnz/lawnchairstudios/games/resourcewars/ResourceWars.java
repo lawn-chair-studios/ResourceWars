@@ -20,7 +20,7 @@ public class ResourceWars extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		game = new Game(Game.ViewportType.STRETCH);
+		game = new Game(Game.ViewportType.FIT);
 	}
 
 	@Override
