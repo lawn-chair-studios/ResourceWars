@@ -3,6 +3,7 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -44,6 +47,15 @@ public class Game {
 			map = new TmxMapLoader().load(DEFAULT_LEVEL_DIR + (this.id = id) + DEFAULT_LEVELID_EXT);
 			renderer = new OrthogonalTiledMapRenderer(map,
 					1 / (float) map.getProperties().get("tilewidth", Integer.class));
+
+		}
+
+		public List<MapObject> getObjects() {
+			List<MapObject> objects = new LinkedList<>();
+			for (MapLayer ml : map.getLayers())
+				for (MapObject mo : ml.getObjects())
+					objects.add(mo);
+			return objects;
 		}
 
 		public void dispose() {

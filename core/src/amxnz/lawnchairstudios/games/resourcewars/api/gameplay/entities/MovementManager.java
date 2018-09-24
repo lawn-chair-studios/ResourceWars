@@ -36,13 +36,24 @@ public class MovementManager {
 	 * {@link #y}, and {@link #orientation}.
 	 */
 	public void calculate() {
-		x.setValue(x.getValue() + cx * speed.getValue());
-		y.setValue(y.getValue() + cy * speed.getValue());
+		cx *= speed.getValue();
+		cy *= speed.getValue();
+
+		move(x.getValue(), y.getValue(), x.getValue() + cx, y.getValue() + cy);
+
+		cx = cy = 0;
+	}
+
+	protected void move(float fx, float fy, float tx, float ty) {
+		x.setValue(tx);
+		y.setValue(ty);
+	}
+
+	protected final void orient(float cx, float cy) {
 		float dir = (float) Math.toDegrees(Math.atan(cy / cx));
 		if (cx < 0)
 			dir += 180;
 		orientation.setValue(dir);
-		cx = cy = 0;
 	}
 
 	private float getXByCos(float amount, float direction) {
