@@ -43,11 +43,12 @@ public class Game {
 
 		private final String id;
 
+		public final int tileSize;
+
 		protected Level(String id) {
 			map = new TmxMapLoader().load(DEFAULT_LEVEL_DIR + (this.id = id) + DEFAULT_LEVELID_EXT);
 			renderer = new OrthogonalTiledMapRenderer(map,
-					1 / (float) map.getProperties().get("tilewidth", Integer.class));
-
+					1 / (float) (tileSize = map.getProperties().get("tilewidth", Integer.class)));
 		}
 
 		public List<MapObject> getObjects() {
@@ -102,7 +103,7 @@ public class Game {
 
 	private final Level currentLevel = new Level("Start");// TODO Remove test code
 
-	private Player player = new Player(new AbstractEntity() {
+	private Player player = new Player(new AbstractEntity(currentLevel) {
 		{
 			addOrientationHandler(new OrientationHandler(270) {
 

@@ -40,13 +40,21 @@ public class MovementManager {
 		cy *= speed.getValue();
 
 		move(x.getValue(), y.getValue(), x.getValue() + cx, y.getValue() + cy);
-
+		orient(cx, cy);
 		cx = cy = 0;
 	}
 
 	protected void move(float fx, float fy, float tx, float ty) {
 		x.setValue(tx);
 		y.setValue(ty);
+	}
+
+	protected final void setX(float x) {
+		this.x.setValue(x);
+	}
+
+	protected final void setY(float y) {
+		this.y.setValue(y);
 	}
 
 	protected final void orient(float cx, float cy) {

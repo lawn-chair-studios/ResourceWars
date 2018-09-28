@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game.Game.Level;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue.Observer;
 
@@ -88,7 +89,16 @@ public abstract class AbstractEntity {
 				}
 			}, speed = new ObservableValue<>(1f);
 
-	private final MovementManager mover = new MovementManager(x, y, orientation, speed);
+	private final MovementManager mover;
+
+	public AbstractEntity(Level level) {
+		mover = new BoundMovementManager(x, y, orientation, speed, level);
+	}
+
+	public AbstractEntity() {
+		mover = new MovementManager(x, y, orientation, speed);
+	}
+
 	private final LinkedList<OrientationHandler> orientationHandlers = new LinkedList<>();
 
 	private final ObservableValue<OrientationHandler> currentHandler = new ObservableValue<>(null);
