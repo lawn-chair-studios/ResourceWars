@@ -154,8 +154,11 @@ public abstract class AbstractEntity {
 		int pos = Collections.binarySearch(orientationHandlers, handler);
 		if (!(pos < 0))
 			throw new RuntimeException("OrientationHandler with same degree already exists.");
-		else
+		else {
 			orientationHandlers.add(-(pos + 1), handler);
+			if (orientationHandlers.size() == 1)
+				currentHandler.setValue(handler);
+		}
 	}
 
 	public void cameraBind(final Camera camera, boolean bound) {

@@ -36,6 +36,8 @@ public class MovementManager {
 	 * {@link #y}, and {@link #orientation}.
 	 */
 	public void calculate() {
+		if (cx == 0 && cy == 0)
+			return;
 		cx *= speed.getValue();
 		cy *= speed.getValue();
 
