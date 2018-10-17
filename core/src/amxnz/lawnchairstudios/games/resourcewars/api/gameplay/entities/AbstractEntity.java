@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.game.Game.Level;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue;
 import amxnz.lawnchairstudios.games.resourcewars.api.observables.ObservableValue.Observer;
 
@@ -88,7 +89,16 @@ public abstract class AbstractEntity {
 				}
 			}, speed = new ObservableValue<>(1f);
 
-	private final MovementManager mover = new MovementManager(x, y, orientation, speed);
+	private final MovementManager mover;
+
+	public AbstractEntity(Level level) {
+		mover = new BoundMovementManager(x, y, orientation, speed, level);
+	}
+
+	public AbstractEntity() {
+		mover = new MovementManager(x, y, orientation, speed);
+	}
+
 	private final LinkedList<OrientationHandler> orientationHandlers = new LinkedList<>();
 
 	private final ObservableValue<OrientationHandler> currentHandler = new ObservableValue<>(null);
@@ -144,8 +154,11 @@ public abstract class AbstractEntity {
 		int pos = Collections.binarySearch(orientationHandlers, handler);
 		if (!(pos < 0))
 			throw new RuntimeException("OrientationHandler with same degree already exists.");
-		else
+		else {
 			orientationHandlers.add(-(pos + 1), handler);
+			if (orientationHandlers.size() == 1)
+				currentHandler.setValue(handler);
+		}
 	}
 
 	public void cameraBind(final Camera camera, boolean bound) {
