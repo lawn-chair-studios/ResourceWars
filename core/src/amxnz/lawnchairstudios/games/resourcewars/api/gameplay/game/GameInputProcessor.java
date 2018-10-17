@@ -5,6 +5,7 @@ import static com.badlogic.gdx.Input.Keys.D;
 import static com.badlogic.gdx.Input.Keys.S;
 import static com.badlogic.gdx.Input.Keys.W;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,9 +42,15 @@ class GameInputProcessor implements InputProcessor {
 		return false;
 	}
 
+	private static final NumberFormat RAM_OUTPUT_FORMATTER = NumberFormat.getInstance();
+
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
+		Runtime inst = Runtime.getRuntime();
+		if (character == 'I')
+			System.out.println("TOTAL[FREE=" + RAM_OUTPUT_FORMATTER.format(inst.freeMemory()) + "+USED="
+					+ RAM_OUTPUT_FORMATTER.format(inst.totalMemory() - inst.freeMemory()) + "]="
+					+ RAM_OUTPUT_FORMATTER.format(inst.totalMemory()));
 		return false;
 	}
 
