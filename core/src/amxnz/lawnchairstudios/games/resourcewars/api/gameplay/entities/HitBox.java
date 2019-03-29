@@ -9,6 +9,8 @@ public class HitBox {
 
 	private final List<Point> points = new LinkedList<>();
 
+	public static final HitBox NONE = new HitBox();
+
 	public HitBox(Point... points) {
 		for (Point p : points)
 			this.points.add(p);
