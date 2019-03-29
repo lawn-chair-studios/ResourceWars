@@ -55,7 +55,7 @@ public class BoundMovementManager extends MovementManager {
 	@Override
 	protected void move(float fx, float fy, float tx, float ty) {
 
-		System.out.println("From A(" + fx + ", " + fy + ") -> B(" + tx + ", " + ty + ")");
+//		System.out.println("From A(" + fx + ", " + fy + ") -> B(" + tx + ", " + ty + ")");
 		Level level = this.level.getValue();
 		for (MapObject mo : collisionEnabledObjects)
 			if (mo instanceof PolylineMapObject) {
@@ -67,30 +67,19 @@ public class BoundMovementManager extends MovementManager {
 							dx = (verts[i + 2] + poly.getX()) / level.tileSize,
 							dy = (verts[i + 3] + poly.getY()) / level.tileSize;
 					// TODO Find out where they collide
-					if (cx >= dx) {// C to the right of D
-						if (cy > dy) {// C is also above D
-							float left, right;
-							if (fx >= tx) {
-								right = fx;
-								left = tx;
-							} else {
-								right = tx;
-								left = fx;
-							}
-							if (fy > dy && fy < cy && ty > dy && ty < cy) {// F and T are both below C, and both above
-																			// D.
-								System.out.println("Collision.");
-							} else if (fx >= dx && fx <= cx && tx > dx && tx < cx) {// F and T are both horizontally
-																					// between C and D.
-								System.out.println("Collision.");
-							} else if (left <= cx && right >= dx) {
-								System.out.println("Collision.");
-							}
-						}
 
-						// Collision if Tx > Dx && Ty < Cy
-					}
+					// Equ = y=ftslope*x+shift
+					float ftslope = (tx - fx) / (ty - fy), cdslope = (dx - cx) / (dy - cy);
 
+					if (ftslope == cdslope)
+						continue;
+
+					float ftb = fy - fx * ftslope, cdb = cy - cx * cdslope;
+
+					float intersectionpoint = (cdb - ftb) / (ftslope - cdslope);
+					
+					
+					
 				}
 			}
 
