@@ -87,7 +87,7 @@ public abstract class AbstractEntity {
 						value += 360;
 					super.setValue(value);
 				}
-			}, speed = new ObservableValue<>(1f);
+			}, speed = new ObservableValue<>(2.25f);
 
 	private final MovementManager mover;
 
