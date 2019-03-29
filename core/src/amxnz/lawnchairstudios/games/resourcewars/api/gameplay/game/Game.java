@@ -33,6 +33,8 @@ import amxnz.lawnchairstudios.games.resourcewars.api.gameplay.player.Player;
  */
 public class Game {
 
+	private static final int DEFAULT_VIEWPORT_SIZE = 12;
+
 	public class Level {
 
 		private static final String DEFAULT_LEVEL_DIR = "amxnz/lawnchairstudios/games/resourcewars/assets/levels/levels/",
@@ -101,7 +103,7 @@ public class Game {
 
 	private Batch renderBatch = new SpriteBatch(10);
 
-	private final Level currentLevel = new Level("Start");// TODO Remove test code
+	private final Level currentLevel = new Level("ConceptTest-1");// TODO Remove test code
 
 	private Player player = new Player(new AbstractEntity(currentLevel) {
 		{
@@ -140,7 +142,7 @@ public class Game {
 
 	public Game(ViewportType stretch) {
 
-		float worldDimensions = 8;
+		float worldDimensions = DEFAULT_VIEWPORT_SIZE;
 
 		switch (stretch) {
 		default:
