@@ -92,7 +92,11 @@ public abstract class AbstractEntity {
 	private final MovementManager mover;
 
 	public AbstractEntity(Level level) {
-		mover = new BoundMovementManager(x, y, orientation, speed, level);
+		mover = new BoundMovementManager(x, y, orientation, speed, level, HitBox.NONE);
+	}
+
+	public AbstractEntity(Level level, HitBox hitbox) {
+		mover = new BoundMovementManager(x, y, orientation, speed, level, hitbox);
 	}
 
 	public AbstractEntity() {

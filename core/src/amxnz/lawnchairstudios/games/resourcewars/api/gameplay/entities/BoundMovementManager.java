@@ -17,6 +17,16 @@ public class BoundMovementManager extends MovementManager {
 
 	private List<MapObject> collisionEnabledObjects;
 
+	private HitBox hitbox;
+
+	public void setHitbox(HitBox hitbox) {
+		this.hitbox = hitbox;
+	}
+
+	public HitBox getHitbox() {
+		return hitbox;
+	}
+
 	{
 		level.addObserver((oldValue, newValue) -> {
 			if (oldValue != newValue) {
@@ -42,8 +52,9 @@ public class BoundMovementManager extends MovementManager {
 	}
 
 	public BoundMovementManager(ObservableValue<Float> x, ObservableValue<Float> y, ObservableValue<Float> orientation,
-			ObservableValue<Float> speed, Level level) {
+			ObservableValue<Float> speed, Level level, HitBox hitbox) {
 		super(x, y, orientation, speed);
+		this.hitbox = hitbox;
 		setLevel(level);
 	}
 
@@ -75,11 +86,8 @@ public class BoundMovementManager extends MovementManager {
 						continue;
 
 					float ftb = fy - fx * ftslope, cdb = cy - cx * cdslope;
-
 					float intersectionpoint = (cdb - ftb) / (ftslope - cdslope);
-					
-					
-					
+
 				}
 			}
 
