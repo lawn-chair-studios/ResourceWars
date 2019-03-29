@@ -3,6 +3,8 @@ package amxnz.lawnchairstudios.games.resourcewars.api.gameplay.entities;
 import java.util.LinkedList;
 import java.util.List;
 
+import amxnz.lawnchairstudios.games.resourcewars.api.Point;
+
 public class HitBox {
 
 	private final List<Point> points = new LinkedList<>();
@@ -10,15 +12,6 @@ public class HitBox {
 	public HitBox(Point... points) {
 		for (Point p : points)
 			this.points.add(p);
-	}
-
-	public final static class Point {
-		public final float x, y;
-
-		public Point(float x, float y) {
-			this.x = x;
-			this.y = y;
-		}
 	}
 
 	public Point getPoint(int position) {
